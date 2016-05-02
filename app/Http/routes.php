@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Redis;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -20,3 +22,17 @@ Route::get('/', function () {
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+
+
+Route::get('/redis', function () {
+    $data = [
+        'event' => 'UserJoined',
+        'data' => [
+            'username' => 'John Doe'
+        ]
+    ];
+
+    Redis::publish('test-channel', json_encode($data));
+
+    return 'Done';
+});
